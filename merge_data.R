@@ -19,16 +19,17 @@ road <- read.dbf("roaddata.dbf")
 crash <- read.dbf("crash_05-14.dbf")
 
 
-all.equal(names(dot05),names(dot06))
-which(names(dot05)!=names(dot06)) #7
-match(names(dot05),names(dot06))
-all.equal(names(dot07),names(dot06)) #true
-all.equal(names(dot07),names(dot08)) #1 string mismatch
-which(names(dot07)!=names(dot08)) #7
-all.equal(names(dot07),names(dot09)) #true
-all.equal(names(dot07),names(dot10)) #1 string mismatch
+keep <- c("AADT","ACCESSCNTL","AUTOMOBILE","BUS","COMNETWORK","COMPLETED","CORPCITY","CRACKPATCH",
+          "CURBEDL","CURBEDR","DIRECTION","FEDFUNC","FID_1","IRI","JURISDIC","LIMITMPH","MEDTYPE",
+          "MEDWIDTH","NHS","NUMLANES","PICKUP","PSIRATING","RUMBLEL","RUMBLER","SINGLEUNIT",
+          "SINGMULTTR","SURFTYPE","SURFWIDTH","SYSCODE","TERRAIN","TRANSCENTE","TRNLINKID","TRNNODE_F",
+          "TRNNODE_T","TRUCKRTE","NATHWYSYS","NE","SHDTIEDL","SHDTIEDR","SHDTYPEL","SHDTYPER",
+          "SHDWIDTHL","SHDWIDTHR","URBANAREA")
+remove <- c("COMPLETED", "FID_1"  ,   "NHS" ,      "TRNLINKID", "TRNNODE_F", "TRNNODE_T", "NE")
+keep <- keep[-which(keep %in% remove)]
+keep[which(!keep %in% names(dot05))]
 
-roadkeep <- c("AADT","COMPLETED","COUNTY","MSLink","NHS","TASLINKID","TRNNODE_F","TRNNODE_T","Miles")
+roadkeep <- c("COMPLETED","COUNTY","MSLink","NHS","TASLINKID","Miles")
 crashkeep <- c("CRASH01YR","CRASH02YR","CRASH03YR","CRASH04YR","CRASH05YR","CRASH06YR","CRASH07YR","CRASH08YR",
                "CRASH09YR","CRASH10YR","CRASHES","FATCRASH","FATINJ","MAJCRASH","MAJINJ","MILES","MINCRASH",
                "MININJ","PDOCRASH","POSCRASH","POSSINJ","TASLINKID","UNKCRASH","UNKINJ","VMT","VOLUME","YEAR")
@@ -43,6 +44,74 @@ crash$TASLINKID <- as.factor(crash$TASLINKID)
 road <- unique(road)
 
 dotdata <- merge(crash,road,by="TASLINKID",all=TRUE)
+noroad <- c(128)
+dotdata <- dotdata[-noroad,]
+
+#create df to cbind with dotdata that has corresponding road characteristics via MSLink
+newdf <- data.frame(matrix(0,nrow=nrow(dotdata),ncol=length(keep)))
+for(i in 1:nrow(dotdata)){
+  if(dotdata$YEAR[i]==2005){
+    ind <- which(dot05$MSLINK==dotdata[i,"MSLink"])
+    if(sum(ind) > 0){
+      newdf[i,] <- dot05[ind,keep]
+    }
+  }
+  if(dotdata$YEAR[i]==2006){
+    ind <- which(dot06$MSLINK==dotdata[i,"MSLink"])
+    if(sum(ind) > 0){
+      newdf[i,] <- dot06[ind,keep]
+    }
+  }
+  if(dotdata$YEAR[i]==2007){
+    ind <- which(dot07$MSLINK==dotdata[i,"MSLink"])
+    if(sum(ind) > 0){
+      newdf[i,] <- dot07[ind,keep]
+    }
+  }
+  if(dotdata$YEAR[i]==2008){
+    ind <- which(dot08$MSLINK==dotdata[i,"MSLink"])
+    if(sum(ind) > 0){
+      newdf[i,] <- dot08[ind,keep]
+    }
+  }
+  if(dotdata$YEAR[i]==2009){
+    ind <- which(dot09$MSLINK==dotdata[i,"MSLink"])
+    if(sum(ind) > 0){
+      newdf[i,] <- dot09[ind,keep]
+    }
+  }
+  if(dotdata$YEAR[i]==2010){
+    ind <- which(dot10$MSLINK==dotdata[i,"MSLink"])
+    if(sum(ind) > 0){
+      newdf[i,] <- dot10[ind,keep]
+    }
+  }
+  if(dotdata$YEAR[i]==2011){
+    ind <- which(dot11$MSLINK==dotdata[i,"MSLink"])
+    if(sum(ind) > 0){
+      newdf[i,] <- dot11[ind,keep]
+    }
+  }
+  if(dotdata$YEAR[i]==2013){
+    ind <- which(dot13$MSLINK==dotdata[i,"MSLink"])
+    if(sum(ind) > 0){
+      newdf[i,] <- dot13[ind,keep]
+    }
+  }
+  if(dotdata$YEAR[i]==2014){
+    ind <- which(dot14$MSLINK==dotdata[i,"MSLink"])
+    if(sum(ind) > 0){
+      newdf[i,] <- dot14[ind,keep]
+    }
+  }
+  if(dotdata$YEAR[i]==2012){
+    ind <- which(dot12$TASLINKID==dotdata[i,"TASLINKID"])
+    if(sum(ind) > 0){
+      newdf[i,] <- dot12[ind,keep]
+    }
+  }
+}
+
 
 f1 <- MAJINJ ~ AADT + PDOCRASH + POSCRASH + VOLUME + YEAR + TRNNODE_F + TRNNODE_T + COUNTY
 
