@@ -44,8 +44,8 @@ crash$TASLINKID <- as.factor(crash$TASLINKID)
 road <- unique(road)
 
 dotdata <- merge(crash,road,by="TASLINKID",all=TRUE)
-noroad <- c(128)
-dotdata <- dotdata[-noroad,]
+#noroad <- c(128)
+#dotdata <- dotdata[-noroad,]
 
 #create df to cbind with dotdata that has corresponding road characteristics via MSLink
 newdf <- data.frame(matrix(0,nrow=nrow(dotdata),ncol=length(keep)))
@@ -110,9 +110,28 @@ for(i in 1:nrow(dotdata)){
       newdf[i,] <- dot12[ind,keep]
     }
   }
+  if(i %% 1000 == 0){
+    print(i)
+  }
 }
 
+names(newdf) <- keep
 
-f1 <- MAJINJ ~ AADT + PDOCRASH + POSCRASH + VOLUME + YEAR + TRNNODE_F + TRNNODE_T + COUNTY
 
-m <- spikeSlabGAM(formula=f1,data=dotdata[1:3000,])
+nomslink <- which(rowSums(newdf)==0)
+which(dotdata[nomslink,"MSLink"] %in% dot05$MSLINK)
+
+temp <- cbind(dotdata,newdf)
+
+rhs <- cat(keep,sep="+")
+f1 <- CRASHES ~ lin(AADT)+fct(ACCESSCNTL)+lin(AUTOMOBILE)+lin(BUS)+fct(COMNETWORK)+
+  fct(CORPCITY)+lin(CRACKPATCH)+fct(CURBEDL)+fct(CURBEDR)+fct(DIRECTION)+
+  fct(FEDFUNC)+lin(IRI)+fct(JURISDIC)+lin(LIMITMPH)+fct(MEDTYPE)+lin(MEDWIDTH)+
+  lin(NUMLANES)+lin(PICKUP)+lin(PSIRATING)+fct(RUMBLEL)+fct(RUMBLER)+
+  lin(SINGLEUNIT)+lin(SINGMULTTR)+fct(SURFTYPE)+lin(SURFWIDTH)+fct(SYSCODE)+
+  fct(TERRAIN)+fct(TRANSCENTE)+fct(TRUCKRTE)+fct(NATHWYSYS)+fct(SHDTIEDL)+
+  fct(SHDTIEDR)+fct(SHDTYPEL)+fct(SHDTYPER)+lin(SHDWIDTHL)+lin(SHDWIDTHR)+fct(URBANAREA)
+  
+#remove medtype,
+
+m <- spikeSlabGAM(formula=f1,data=temp[1:100000,])
