@@ -1,5 +1,6 @@
 library(foreign)
 library(spikeSlabGAM)
+library(bestglm)
 
 setwd("\\\\my.files.iastate.edu\\Users\\dcries\\Desktop\\GIMS Rural Two-lane Primary")
 setwd("C:\\Users\\dcries\\github\\ra_dot\\data")
@@ -137,3 +138,28 @@ f1 <- (CRASHES) ~ lin(AADT)+fct(ACCESSCNTL)+lin(AUTOMOBILE)+lin(BUS)+fct(COMNETW
 #remove medtype,
 
 m <- spikeSlabGAM(formula=f1,data=temp,family="poisson",model=list(offset=log(temp$MILES)))
+ssGAM2Bugs(m)
+
+#----------------------------------#
+#for bestglm
+
+bestglmdf <- temp2[,c("AADT","ACCESSCNTL","AUTOMOBILE","BUS","COMNETWORK","CORPCITY","CRACKPATCH",
+          "CURBEDL","CURBEDR","DIRECTION","FEDFUNC","IRI","JURISDIC","LIMITMPH","MEDTYPE",
+          "MEDWIDTH","NUMLANES","PICKUP","PSIRATING","RUMBLEL","RUMBLER","SINGLEUNIT",
+          "SINGMULTTR","SURFTYPE","SURFWIDTH","SYSCODE","TERRAIN","TRANSCENTE",
+          "TRUCKRTE","NATHWYSYS","SHDTIEDL","SHDTIEDR","SHDTYPEL","SHDTYPER",
+          "SHDWIDTHL","SHDWIDTHR","URBANAREA","VOLUME","MILES","CRASHES")]
+
+cols <- c("ACCESSCNTL","COMNETWORK","CORPCITY",
+          "CURBEDL","CURBEDR","DIRECTION","FEDFUNC","JURISDIC","MEDTYPE",
+          "RUMBLEL","RUMBLER",
+          "SURFTYPE","SYSCODE","TERRAIN","TRANSCENTE",
+          "TRUCKRTE","NATHWYSYS","SHDTIEDL","SHDTIEDR","SHDTYPEL","SHDTYPER",
+         "URBANAREA")
+
+bestglmdf[,cols] <- lapply(bestglmdf[,cols],as.factor)
+
+m2 <- bestglm(na.omit(bestglmdf),family=poisson,method="stepwise")
+
+m2 <- glm(CRASHES~offset(log(MILES))+AADT+ACCESSCNTL+AUTOMOBILE+BUS+FEDFUNC+PICKUP+RUMBLER+VOLUME+URBANAREA,family=poisson,data=bestglmdf)
+slm2 <- step(m2)
