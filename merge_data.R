@@ -122,16 +122,18 @@ nomslink <- which(rowSums(newdf)==0)
 which(dotdata[nomslink,"MSLink"] %in% dot05$MSLINK)
 
 temp <- cbind(dotdata,newdf)
+temp2 <- temp[-nomslink,]
 
 rhs <- cat(keep,sep="+")
-f1 <- CRASHES ~ lin(AADT)+fct(ACCESSCNTL)+lin(AUTOMOBILE)+lin(BUS)+fct(COMNETWORK)+
+f1 <- (CRASHES) ~ lin(AADT)+fct(ACCESSCNTL)+lin(AUTOMOBILE)+lin(BUS)+fct(COMNETWORK)+
   fct(CORPCITY)+lin(CRACKPATCH)+fct(CURBEDL)+fct(CURBEDR)+fct(DIRECTION)+
   fct(FEDFUNC)+lin(IRI)+fct(JURISDIC)+lin(LIMITMPH)+fct(MEDTYPE)+lin(MEDWIDTH)+
   lin(NUMLANES)+lin(PICKUP)+lin(PSIRATING)+fct(RUMBLEL)+fct(RUMBLER)+
   lin(SINGLEUNIT)+lin(SINGMULTTR)+fct(SURFTYPE)+lin(SURFWIDTH)+fct(SYSCODE)+
   fct(TERRAIN)+fct(TRANSCENTE)+fct(TRUCKRTE)+fct(NATHWYSYS)+fct(SHDTIEDL)+
-  fct(SHDTIEDR)+fct(SHDTYPEL)+fct(SHDTYPER)+lin(SHDWIDTHL)+lin(SHDWIDTHR)+fct(URBANAREA)
+  fct(SHDTIEDR)+fct(SHDTYPEL)+fct(SHDTYPER)+lin(SHDWIDTHL)+lin(SHDWIDTHR)+fct(URBANAREA)+
+  lin(VOLUME) 
   
 #remove medtype,
 
-m <- spikeSlabGAM(formula=f1,data=temp[1:100000,])
+m <- spikeSlabGAM(formula=f1,data=temp,family="poisson",model=list(offset=log(temp$MILES)))
