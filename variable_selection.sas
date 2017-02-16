@@ -20,3 +20,8 @@ proc HPGenselect data=dot;
   selection method=stepwise(choose=aicc);
   run;
   
+  proc glm data=dot;
+class ACCESSCNTL COMNETWORK CORPCITY;
+model CRASHES = ACCESSCNTL COMNETWORK CORPCITY;
+means ACCESSCNTL /alpha=0.05 bon lsd tukey;
+run;
