@@ -15,6 +15,10 @@ X <- as.data.frame(model.matrix(
   ~ ACCESSCNTL+TRANSCENTE+VOLUME, data=d))
 
 
+ind=matrix(rep(1:lu,lu),ncol=lu,byrow=F)
+diag(ind) <- NA
+indv <- as.numeric(ind)
+ind = matrix(indv[!is.na(indv)],nrow=lu-1,ncol=lu,byrow=F)
 
 dataList = list(
   Y = d$FATMAJCRASHES,
@@ -33,17 +37,25 @@ dataList = list(
   lomub=length(omub),lnomub=length(nomub),
   m0=rep(0,ncol(X)),
   V0=diag(ncol(X))/100,
-  jno0=jno0,j0=j0
+  jno0=jno0,j0=j0,ind=ind
 )
 
-crash <- "
-model{
+crash <- "model{
   for(i in 1:N){
     XB[i] <- inprod(X[i,],beta)
     Y[i] ~ dpois(lambda[i])
     v[i] ~ dnorm(0,tau2v)
     #lambda[i] <- exp(XB[i] + log_l[i] ) 
   }
+  for(i in 1:lu){
+    u[i] ~ dnorm(mub[i],tau2b[i])
+      for(j in 1:(lu-1)){
+        mub[i] <- mub[i] + w[i,ind[j,i]]*u[ind[j,i]]
+      }
+    #mub[i] <- inprod(w[i,],u)/sum(w[i,])   #not sure about this division
+    tau2b[i] <- tau2u/sum(w[i,])         #not sure about this
+  }
+
   for(i in 1:lj0){
     lambda[j0[i]] <- exp(XB[j0[i]]  + log_l[j0[i]] + v[j[j0[i]]])
   }
@@ -51,12 +63,8 @@ model{
   for(i in 1:ljno0){
     lambda[jno0[i]] <-  exp(XB[jno0[i]]  + log_l[jno0[i]] + v[j[jno0[i]]] +u[k[i]]) #not sure about this
   }
-  for(i in 1:lu){
-    mub[i] <- inprod(w[i,],u)/sum(w[i,])   #not sure about this division
-    tau2b[i] <- tau2u/sum(w[i,])         #not sure about this
-    u[i] ~ dnorm(mub[i],tau2b[i])
-  }
 
+  #u ~ dmnorm(mub,cv)
   beta ~ dmnorm(m0,V0)
   tau2v ~ dgamma(0.5,0.05)
   tau2u ~ dgamma(0.5, 0.05)
@@ -66,5 +74,5 @@ model{
 
 }"
 
-mjc <- jags.model(textConnection(crash),dataList,n.chains=1,n.adapt=10000)
-crashsamp <- coda.samples(mjc,c("beta","sigmav"),n.iter=100)
+mjc <- jags.model(textConnection(crash),dataList,n.chains=1,n.adapt=1000)
+crashsamp <- coda.samples(mjc,c("beta","sigmav"),n.iter=1000)

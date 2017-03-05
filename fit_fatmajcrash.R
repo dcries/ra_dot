@@ -1,10 +1,13 @@
+library(StanHeaders)
 library(rstan)
 
 
-setwd("C:\\Users\\dcries\\github\\ra_dot\\data")
-load("//my.files.iastate.edu/Users/dcries/Desktop/RA_DOT/neighbors.RData")
+setwd("C:\\Users\\dcries\\github\\ra_dot")
+load("neighbors.RData")
+load("neighbors_subset.RData")
 
-d <- read.csv('completedata_nona.csv')
+d <- read.csv('data\\completedata_nona.csv')
+d <- d[1:2000,]
 
 d$ACCESSCNTL <- as.factor(d$ACCESSCNTL)
 d$TRANSCENTE <- as.factor(d$TRANSCENTE)

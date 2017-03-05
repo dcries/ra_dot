@@ -33,14 +33,14 @@ transformed parameters {
 //generated quantities{
   vector[N] lambda;
   vector[lu] mub;
-  vector<lower=0>[lu] tau2b;
+  #vector<lower=0>[lu] tau2b;
   vector[N] XB;
-  vector<lower=0>[lu] sigmab;
+  #vector<lower=0>[lu] sigmab;
   real<lower=0> sigmav;
   
-  for(i in 1:lu){
-    sigmab[i] <- 1/sqrt(tau2b[i]);
-  }
+  #for(i in 1:lu){
+  #  sigmab[i] <- 1/sqrt(tau2b[i]);
+  #}
   sigmav <- 1/sqrt(tau2v);
   
  //  for(i in 1:lomub)
@@ -49,10 +49,10 @@ transformed parameters {
   //  for(i in 1:lnomub)
   //  mub[nomub[i]] <-  dot_product(w[nomub[i]],u) /scolw[nomub[i]];
   
-  for(i in 1:lu){
-       tau2b[i] <- tau2u / scolw[i]; // ??? is this correct --> tau2u * scolw? writeup says 
+  #for(i in 1:lu){
+  #     tau2b[i] <- tau2u / scolw[i]; // ??? is this correct --> tau2u * scolw? writeup says 
    //differently, ie. to divide
-  }
+  #}
 
   
   XB <- X*Beta;
@@ -77,9 +77,9 @@ transformed parameters {
 model {
   Beta ~ normal(0,.1);
   tau2v ~ gamma(0.5, 0.05);
-  tau2u ~ gamma(0.5, 0.05);
+  #tau2u ~ gamma(0.5, 0.05);
   
-  u ~ normal(mub,sigmab); //normal(mub,tau2b);
+  #u ~ normal(mub,sigmab); //normal(mub,tau2b);
   v ~ normal(0,sigmav);//normal(0,tau2v);
  
   Y  ~ poisson(lambda);
