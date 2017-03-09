@@ -2,7 +2,7 @@ library(StanHeaders)
 library(rstan)
 
 
-setwd("/home/dcries/ra_dot")
+#setwd("/home/dcries/ra_dot")
 load("/home/dcries/ra_dot/neighbors.RData")
 
 d <- read.csv('/home/dcries/ra_dot/data/completedata_nona.csv')
@@ -38,7 +38,7 @@ rstan_options(auto_write = TRUE)
 options(mc.cores = parallel::detectCores())
 
 
-fit <- stan(file = 'Model12_Fitting_5.stan',
+fit <- stan(file = '/home/dcries/ra_dot/Model12_Fitting_5.stan',
             data = dataList,
             #pars="Beta",
             pars=c("Beta","sigmav","sigmau"),
