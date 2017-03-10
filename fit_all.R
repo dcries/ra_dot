@@ -10,15 +10,23 @@ d <- read.csv('/home/dcries/ra_dot/data/completedata_nona.csv')
 d$ACCESSCNTL <- as.factor(d$ACCESSCNTL)
 d$TRANSCENTE <- as.factor(d$TRANSCENTE)
 d$lVOLUME <- log(as.numeric(d$VOLUME))
+d$FEDFUNC <- as.factor(d$FEDFUNC)
+d$MEDTYPE2 <- as.factor(d$MEDTYPE2)
+d$SYSCODE <- as.factor(d$SYSCODE)
+d$TERRAIN <- as.factor(d$TERRAIN)
+d$COMNETWORK <- as.factor(d$COMNETWORK)
+d$NATHWYSYS <- as.factor(d$NATHWYSYS)
+
 
 X <- as.data.frame(model.matrix(
-  ~ ACCESSCNTL+TRANSCENTE+lVOLUME, data=d))
+  ~ TRANSCENTE+lVOLUME+FEDFUNC+MEDTYPE2+SYSCODE+URBAN+MEDWIDTH+TERRAIN+PSIRATING+
+    ACCESSCNTL+COMNETWORK+NATHWYSYS, data=d))
 
 
 
 dataList = list(
   Y = d$FATMAJCRASHES,
-  N = length(d$FATMAJCRASHES),
+  N = length(d$CRASHES),
   ljno0=neighbors$ljno0,
   lj0=neighbors$lj0 , 
   lu = neighbors$lu,
@@ -44,7 +52,7 @@ fit <- stan(file = '/home/dcries/ra_dot/Model12_Fitting_5.stan',
             pars=c("Beta","sigmav","sigmau"),
             chains = 4, iter=4000)   ##Compiling the model
 
-save(fit,file="fit_fatmaj.RData")
+save(fit,file="fit_all.RData")
 #----------------------------------------#
 
 
