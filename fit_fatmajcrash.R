@@ -3,39 +3,53 @@ library(rstan)
 
 
 setwd("C:\\Users\\dcries\\github\\ra_dot")
+setwd("/home/danny/Documents/github/ra_dot/")
 load("neighbors.RData")
 load("neighbors_subset.RData")
 
-d <- read.csv('data\\completedata_nona.csv')
+d <- read.csv('data/completedata_nona.csv')
 d <- d[1:2000,]
 
 d$ACCESSCNTL <- as.factor(d$ACCESSCNTL)
 d$TRANSCENTE <- as.factor(d$TRANSCENTE)
 d$VOLUME <- as.numeric(d$VOLUME)
+d$lVOLUME <- log(d$VOLUME)
 
 X <- as.data.frame(model.matrix(
-  ~ ACCESSCNTL+TRANSCENTE+VOLUME, data=d))
+  ~ ACCESSCNTL+TRANSCENTE+lVOLUME, data=d))
 
 
 
 dataList = list(
-  Y = d$FATMAJCRASHES,
   N = length(d$CRASHES),
+  Y = d$FATMAJCRASHES,
   ljno0=ljno0,
   lj0=lj0 , 
   lu = lu,
   log_l = log(d$MILES),
-  X = X,
+  X = as.matrix(X),
   K = length(X[1,]),
   Nseg=length(unique(d$TASLINKID)),
   j = j, k=k,
   w=w,
   scolw = scolw,
   omub=omub,nomub=nomub,
-  lomub=length(omub),lnomub=length(nomub)
+  lomub=length(omub),lnomub=nrow(w)
 )
 
-fit <- stan(file = '..\\Model12_Fitting_5.stan',
+### For paralellizing
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
+
+
+model <- stan_model(file='Model12_Fitting_5.stan')
+fit <- sampling(model,data=dataList,chains=4,iter=1000,pars=c("Beta","sigmav","sigmau"))#,iter=1000,control = list(adapt_delta = .9))
+
+fitdf <- as.data.frame(fit)
+names(fitdf) <- tolower(names(fitdf))
+
+
+fit <- stan(file = 'Model12_Fitting_5.stan',
             data = dataList,
             #pars="Beta",
             pars=c("Beta","lambda"),
