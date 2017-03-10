@@ -3,7 +3,7 @@ library(rstan)
 
 
 #setwd("/home/dcries/ra_dot")
-load("/home/dcries/ra_dot/neighbors.RData")
+load("/home/dcries/ra_dot/neighbors_reduced.RData")
 
 d <- read.csv('/home/dcries/ra_dot/data/completedata_nona.csv')
 
@@ -19,18 +19,18 @@ X <- as.data.frame(model.matrix(
 dataList = list(
   Y = d$FATMAJCRASHES,
   N = length(d$FATMAJCRASHES),
-  ljno0=ljno0,
-  lj0=lj0 , 
-  lu = lu,
+  ljno0=neighbors$ljno0,
+  lj0=neighbors$lj0 , 
+  lu = neighbors$lu,
   log_l = log(d$MILES),
   X = X,
   K = length(X[1,]),
   Nseg=length(unique(d$TASLINKID)),
-  j = j, k=k,
-  w=w,
-  scolw = scolw,
-  omub=omub,nomub=nomub,
-  lomub=length(omub),lnomub=length(nomub)
+  j = neighbors$j, k=neighbors$k,
+  w=neighbors$w,
+  scolw = neighbors$scolw,
+  omub=neighbors$omub,nomub=neighbors$nomub,
+  lomub=length(neighbors$omub),lnomub=length(neighbors$nomub)
 )
 
 ### For paralellizing
