@@ -13,6 +13,7 @@ d$lVOLUME <- log(as.numeric(d$VOLUME))
 d$FEDFUNC <- as.factor(d$FEDFUNC)
 d$MEDTYPE2 <- as.factor(d$MEDTYPE2)
 d$SYSCODE <- as.factor(d$SYSCODE)
+d$URBAN <- as.factor(d$URBAN)
 
 
 X <- as.data.frame(model.matrix(
