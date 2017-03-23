@@ -11,8 +11,15 @@ d$ACCESSCNTL <- as.factor(d$ACCESSCNTL)
 d$TRANSCENTE <- as.factor(d$TRANSCENTE)
 d$lVOLUME <- log(as.numeric(d$VOLUME))
 
+d$SHDTYPEL <- as.factor(d$SHDTYPEL)
+d$SHDTYPER <- as.factor(d$SHDTYPER)
+d$SURFTYPE2 <- 0
+d$SURFTYPE2 <- replace(d$SURFTYPE2 , d$SURFTYPE%in%c(60,65,69,92) , 1 )
+d$SURFTYPE2 <- replace(d$SURFTYPE2 , d$SURFTYPE%in%c(70,74,76,77,79) , 2 )
+
 X <- as.data.frame(model.matrix(
-  ~ ACCESSCNTL+TRANSCENTE+lVOLUME, data=d))
+  ~ ACCESSCNTL+TRANSCENTE+lVOLUME+
+    SHDTYPEL+SHDTYPER+SURFTYPE2+SHDWIDTHL+SHDWIDTHR, data=d))
 
 
 

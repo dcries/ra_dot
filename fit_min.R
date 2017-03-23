@@ -15,9 +15,15 @@ d$MEDTYPE2 <- as.factor(d$MEDTYPE2)
 d$SYSCODE <- as.factor(d$SYSCODE)
 d$URBAN <- as.factor(d$URBAN)
 
+d$SHDTYPEL <- as.factor(d$SHDTYPEL)
+d$SHDTYPER <- as.factor(d$SHDTYPER)
+d$SURFTYPE2 <- 0
+d$SURFTYPE2 <- replace(d$SURFTYPE2 , d$SURFTYPE%in%c(60,65,69,92) , 1 )
+d$SURFTYPE2 <- replace(d$SURFTYPE2 , d$SURFTYPE%in%c(70,74,76,77,79) , 2 )
 
 X <- as.data.frame(model.matrix(
-  ~ TRANSCENTE+lVOLUME+FEDFUNC+MEDTYPE2+SYSCODE+URBAN, data=d))
+  ~ TRANSCENTE+lVOLUME+FEDFUNC+MEDTYPE2+SYSCODE+URBAN+
+    SHDTYPEL+SHDTYPER+SURFTYPE2+SHDWIDTHL+SHDWIDTHR, data=d))
 
 
 
