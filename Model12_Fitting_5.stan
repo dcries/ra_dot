@@ -21,10 +21,10 @@ int<lower=0> k[ljno0];
 }
 
 parameters {
-  real<lower=0> tau2u; //  precision for the variance of u
+  //real<lower=0> tau2u; //  precision for the variance of u
   real<lower=0> tau2v; //  precision for the variance of v
   vector[Nseg] v;   // random interceptor for TASLINID
-  vector[lu] u; // random variables: contains the spatial correlation
+  //vector[lu] u; // random variables: contains the spatial correlation
   vector[K] Beta;   /// fixed effects coefficients
   //real<lower=0> lambda;
   
@@ -33,26 +33,26 @@ parameters {
 transformed parameters {
 //generated quantities{
   vector[N] lambda;
-  vector[lu] mub;
-  vector<lower=0>[lu] tau2b;
+  //vector[lu] mub;
+  //vector<lower=0>[lu] tau2b;
   vector[N] XB;
-  vector<lower=0>[lu] sigmab;
+  //vector<lower=0>[lu] sigmab;
   real<lower=0> sigmav;
-  real<lower=0> sigmau;
+  //real<lower=0> sigmau;
 
   sigmav <- 1/sqrt(tau2v);
-  sigmau <- 1/sqrt(tau2u);
+  //sigmau <- 1/sqrt(tau2u);
   
  //  for(i in 1:lomub)
   //    mub[omub[i]] <-0 ;
     
-  for(i in 1:lnomub){
-    mub[i] <-  dot_product(w[i],u) /scolw[i];
-    tau2b[i] <- tau2u * scolw[i]; 
-    sigmab[i] <- 1/sqrt(tau2b[i]);
+  //for(i in 1:lnomub){
+  //  mub[i] <-  dot_product(w[i],u) /scolw[i];
+  //  tau2b[i] <- tau2u * scolw[i]; 
+  //  sigmab[i] <- 1/sqrt(tau2b[i]);
     //tau2u * scolw? writeup says 
    //differently, ie. to divide
-  }
+  //}
     
 
 
@@ -64,7 +64,7 @@ transformed parameters {
   }
    
   for(i in 1:ljno0){
-    lambda[jno0[i]] <-  exp(XB[jno0[i]] + v[j[jno0[i]]]+ + log_l[jno0[i]] + u[ k[i] ]);
+    lambda[jno0[i]] <-  exp(XB[jno0[i]] + v[j[jno0[i]]]+ + log_l[jno0[i]]); //+ u[ k[i] ]);
   }
  
  
@@ -82,9 +82,9 @@ transformed parameters {
 model {
   Beta ~ normal(0,.1);
   tau2v ~ gamma(0.5, 0.05);
-  tau2u ~ gamma(0.5, 0.05);
+  //tau2u ~ gamma(0.5, 0.05);
   
-  u ~ normal(mub,sigmab); //normal(mub,tau2b);
+  //u ~ normal(mub,sigmab); //normal(mub,tau2b);
   v ~ normal(0,sigmav);//normal(0,tau2v);
  
   //Y  ~ poisson(lambda);
