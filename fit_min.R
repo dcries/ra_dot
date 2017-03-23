@@ -54,7 +54,7 @@ options(mc.cores = parallel::detectCores())
 fit <- stan(file = '/home/dcries/ra_dot/Model12_Fitting_5.stan',
             data = dataList,
             #pars="Beta",
-            pars=c("Beta","sigmav","sigmau"),
+            pars=c("Beta","sigmav"),
             chains = 4, iter=4000)   ##Compiling the model
 
 save(fit,file="fit_min.RData")
