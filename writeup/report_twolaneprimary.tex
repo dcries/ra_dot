@@ -1,0 +1,118 @@
+\documentclass[a4paper]{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+
+\title{Bayesian Model for Vehicle Crashes on Two-Lane Primary Roads in Iowa}
+
+\author{Daniel Ries \\ Michael D. Pawlovich \\ Alicia Carriquiry \\ Zachary Hans}
+
+\date{\today}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Enter a short summary here. What topic do you want to investigate and why? What experiment did you perform? What were your main results and conclusion?
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction and Data Description}
+
+In this report we present a model as well as results to produce Safety Performance Functions (SPF) for two lane primary roads in Iowa. The model we develop and estimate uses data from 2005-2014. We have information on over 70 road characteristics such as speed limit, median width, volume and access control (to name a few) for each road segment. We also have the total number of crashes, number of fatal crashes, number of crashes resulting in major injuries and minor injuries, and number of crashes resulting in only property damage. Because fatal crashes are relatively uncommon, we will combine fatal and major crashes into one category. There are 94,370 observations at 10,055 unique road segments. 
+
+
+\section{Model Specification}
+
+To model the number of crashes as a function of observed covariates, we use a generalized linear mixed effects model with Poisson response and a log link. The random effect comes from the correlation induced between years at specific road segments. Because we have measurements at the same location over the course of 10 years, we include random effects to allow dependence across years. We also include an offset term as road segments are not all equal length. 
+
+Denote:
+
+\begin{itemize}
+\item
+$Y_{ij}$: number of crashes in segment $i$ during year $j$
+\item
+$t_i$: length of segment $i$
+\item
+$x_{ij}$: $p$-dimensional vector of covariates for segment $i$ and year $j$
+\item
+$\boldsymbol{\beta}$: $p$-dimensional parameter vector for covariate coefficients
+\item
+$v_i$: random intercept for segment $i$, induces correlation between years for segment $i$
+\end{itemize}
+
+The model is characterized by:
+
+\begin{align*}
+Y_{ij}|\lambda_{ij},t_i &\overset{ind}{\sim} Poisson(\lambda_{ij}t_i),\\
+log(\lambda_{ij})|\boldsymbol{\beta},v_i &= x_{ij}^T \boldsymbol{\beta} + v_i, \\
+v_i &\overset{iid}{\sim} N(0,\sigma_v^2).
+\end{align*}
+
+We specify the priors as:
+
+\begin{align*}
+\beta &\overset{iid}{\sim} N(0,100),\\
+\sigma_v^2 &\sim IG(0.1,0.1).
+\end{align*}
+
+
+\section{Variable Selection}
+
+There 
+
+\end{document}
