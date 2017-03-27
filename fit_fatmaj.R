@@ -19,7 +19,7 @@ d$SURFTYPE2 <- replace(d$SURFTYPE2 , d$SURFTYPE%in%c(70,74,76,77,79) , 2 )
 
 X <- as.data.frame(model.matrix(
   ~ ACCESSCNTL+TRANSCENTE+lVOLUME+
-    SHDTYPEL+SHDTYPER+SURFTYPE2+SHDWIDTHL+SHDWIDTHR, data=d))
+    SURFTYPE2, data=d))
 
 
 
