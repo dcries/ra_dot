@@ -10,7 +10,7 @@ d <- read.csv('/home/dcries/ra_dot/data/completedata_nona.csv')
 d$ACCESSCNTL <- as.factor(d$ACCESSCNTL)
 d$TRANSCENTE <- as.factor(d$TRANSCENTE)
 d$lVOLUME <- log(as.numeric(d$VOLUME))
-d$FEDFUNC <- as.factor(d$FEDFUNC)
+d$FEDFUNC2 <- as.factor(d$FEDFUNC2)
 d$MEDTYPE2 <- as.factor(d$MEDTYPE2)
 d$SYSCODE <- as.factor(d$SYSCODE)
 d$TERRAIN <- as.factor(d$TERRAIN)
@@ -26,8 +26,7 @@ d$SURFTYPE2 <- replace(d$SURFTYPE2 , d$SURFTYPE%in%c(70,74,76,77,79) , 2 )
 
 
 X <- as.data.frame(model.matrix(
-  ~ TRANSCENTE+lVOLUME+FEDFUNC+MEDTYPE2+SYSCODE+URBAN+MEDWIDTH+TERRAIN+PSIRATING+
-    ACCESSCNTL+COMNETWORK+NATHWYSYS+
+  ~ TRANSCENTE+lVOLUME+FEDFUNC2+SYSCODE+URBAN+
     SURFTYPE2, data=d))
 
 
@@ -60,8 +59,8 @@ options(mc.cores = parallel::detectCores())
 fit <- stan(file = '/home/dcries/ra_dot/Model12_Fitting_5.stan',
             data = dataList,
             #pars="Beta",
-            pars=c("Beta","sigmav"),
-            chains = 4, iter=4000)   ##Compiling the model
+            pars=c("Beta","sigmav","v"),
+            chains = 4, iter=10000)   ##Compiling the model
 
 save(fit,file="fit_all.RData")
 #----------------------------------------#
