@@ -5,8 +5,8 @@ int<lower=0> Nseg;   // Number of sections characterized by TASLINKID
 int<lower=0> ljno0;
 int<lower=0> lj0;
 int<lower=0> lu;   // ### Number of sections that has neighbors
-int<lower=0> lnomub ; 
-int<lower=0> lomub ; 
+//int<lower=0> lnomub ; 
+//int<lower=0> lomub ; 
 matrix[N,K] X; // predictor matrix
 matrix[lu,lu] w;
 vector<lower=0> [lu] scolw ;

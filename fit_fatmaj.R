@@ -37,9 +37,9 @@ dataList = list(
   Nseg=length(unique(d$TASLINKID)),
   j = neighbors$j, k=neighbors$k,
   w=neighbors$w,
-  scolw = neighbors$scolw,
-  omub=neighbors$omub,nomub=neighbors$nomub,
-  lomub=length(neighbors$omub),lnomub=length(neighbors$nomub)
+  scolw = neighbors$scolw#,
+  #omub=neighbors$omub,nomub=neighbors$nomub,
+  #lomub=length(neighbors$omub),lnomub=length(neighbors$nomub)
 )
 
 ### For paralellizing
