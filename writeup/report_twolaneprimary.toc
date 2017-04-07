@@ -5,8 +5,8 @@
 \contentsline {subsection}{\numberline {3.1}Spike and Slab Prior}{3}
 \contentsline {subsection}{\numberline {3.2}Variable Descriptions}{4}
 \contentsline {section}{\numberline {4}Model Estimation}{4}
-\contentsline {section}{\numberline {5}Results}{4}
-\contentsline {subsection}{\numberline {5.1}Model for All Crashes}{4}
-\contentsline {subsection}{\numberline {5.2}Model for Fatal and Major Injuries}{4}
-\contentsline {subsection}{\numberline {5.3}Model for Minor Injuries}{4}
-\contentsline {subsection}{\numberline {5.4}Model for Property Damage Only}{4}
+\contentsline {section}{\numberline {5}Results}{5}
+\contentsline {subsection}{\numberline {5.1}Model for All Crashes}{5}
+\contentsline {subsection}{\numberline {5.2}Model for Fatal and Major Injuries}{6}
+\contentsline {subsection}{\numberline {5.3}Model for Minor Injuries}{7}
+\contentsline {subsection}{\numberline {5.4}Model for Property Damage Only}{8}
