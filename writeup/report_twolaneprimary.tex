@@ -66,14 +66,15 @@
 \maketitle
 
 \begin{abstract}
-Enter a short summary here. What topic do you want to investigate and why? What experiment did you perform? What were your main results and conclusion?
+We explore the frequency and severity of crashes on two-lane primary roads in Iowa using a Bayesian generalized linear mixed effects model. We include models for all crashes, crashes resulting in fatalities and major injuries, crashes resulting in minor injuries, and crashed resulting in property damage only. Variables to be included in the models were chosen by a combination of Iowa Department of Transportation (DOT) employee expertise and the use of the spike and slab prior for variable selection in the \texttt{R} package \texttt{spikeSlabGAM}. Volume, transit center, and surface type were important for describing number of crashes for all models and federal function classification, urban area, and US or state road classfication were important for all but the Fatal/Major model. Repeated measures random effects were included to induce correlation among years for given road segments. We used \texttt{Stan} to draw samples from the posterior distributions. We wrote software in \texttt{R} to perform model fitting as well as compute Safety Performance Functions (SPFs).
+
 \end{abstract}
 
 \tableofcontents
 
 \section{Introduction and Data Description}
 
-In this report we present a model as well as results to produce Safety Performance Functions (SPF) for two lane primary roads in Iowa. The model we develop and estimate uses data from 2005-2014. We have information on over 70 road characteristics such as speed limit, median width, volume and access control (to name a few) for each road segment. We also have the total number of crashes, number of fatal crashes, number of crashes resulting in major injuries and minor injuries, and number of crashes resulting in only property damage. Because fatal crashes are relatively uncommon, we will combine fatal and major crashes into one category. There are 94,370 observations at 10,055 unique road segments. 
+In this report we present a model as well as results to produce Safety Performance Functions (SPF) for two lane primary roads in Iowa. The model we develop and estimate uses data from 2005-2014. We have information on over 140 road characteristics such as speed limit, median width, volume and access control (to name a few) for each road segment. We also have the total number of crashes, number of fatal crashes, number of crashes resulting in major injuries and minor injuries, and number of crashes resulting in only property damage. Because fatal crashes are relatively uncommon, we will combine fatal and major crashes into one category. There are 94,370 observations at 10,055 unique road segments. 
 
 
 \section{Model Specification}
@@ -110,9 +111,131 @@ We specify the priors as:
 \sigma_v^2 &\sim IG(0.1,0.1).
 \end{align*}
 
+The term $\lambda_{ij}t_i$ is then the \emph{expected number of crashes per mile} in segment $i$ during year $j$.
 
 \section{Variable Selection}
 
-There 
+\subsection{Spike and Slab Prior}
+There are over 140 road characteristics available, but we do not want to include all in the model in order to avoid overfitting. With the expertise of the Iowa Department of Transportation employees, the number of possible explanatory variables is narrowed down to about 40. However, many of these variables are factors that have many levels. We would like to narrow the possible variables down more so the models have a handful of interpretable variables. In addition, we don't want the factors that are included to have a large number of levels that could lead to overfitting and at the same time provide no real interpretation to the problem.
+
+To select the possible explanatory variables to include in the model, we take a Bayesian approach by using spike and slab priors. We used the R package \texttt{spikeSlabGAM} to implement the variable selection. This package allows for variable selection in the generalized linear model case. It also can check for not only linear associations, but also higher order associations, interactions, as well as a general spline smoother. The article in the Journal of Statistical Software on this package is very helpful. The spike and slab prior the authors of the \texttt{spikeSlabGAM} package in R is given by:
+
+\begin{align*}
+\beta|\gamma,\tau^2 &\sim N(0,v^2), \text{ where } v^2=\tau^2\gamma, \\
+\gamma|w &\sim wI_1(\gamma) + (1-w)I_{v_0}(\gamma),\\
+\tau^2 &\sim Gamma(a_{\tau},b_{\tau}),\\
+w &\sim Beta(a_w,b_w).
+\end{align*}
+
+This amounts to a prior that puts a large amount of density close to 0 with some probability $1-w$ for a regression coefficient $\beta$, and a dispersed density with some probability $w$. This provides shrinkage of the regression coefficient if it is close to 0, otherwise the coefficient is relatively unaffected by the prior. This setup allows us to get inclusion probabilities for each regression coefficient via $\gamma$. We included regression coefficients that had at least a 0.9 inclusion probability. After preliminary models were fit using the variables from the spike and slab prior, we utilized the expertise from DOT employees to do any necessary grouping of factors and eliminating variables that were included in all the models via variable selection, but appeared unimportant statistically and practically in the models. Table \ref{variables} gives the variables included in each model.
+
+\begin{table}[h]
+\begin{tabular}{llll}
+\hline
+Model Fatal/Major & Model Minor & Model PDO & Model All Crashes \\
+\hline
+VOLUME & VOLUME & VOLUME & VOLUME \\
+TRANSCENTE & TRANSCENTE & TRANSCENTE & TRANSCENTE \\
+SURFTYPE & SURFTYPE & SURFTYPE & SURFTYPE \\
+ & FEDFUNC & FEDFUNC & FEDFUNC \\
+  & URBAN & URBAN & URBAN \\
+   & SYSCODE & SYSCODE & SYSCODE \\
+  \hline
+  \end{tabular}
+\caption{Variables included for each model.}
+\label{variables}
+\end{table}
+
+\subsection{Variable Descriptions}
+In this section we describe the variables that are present in the models as explanatory variables. For factor variables, we describe the levels we consider and any groupings. All groupings and levels are the same for the four models.
+
+\begin{itemize}
+\item
+VOLUME: describes useage of segment. We use log(VOLUME) as an explanatory variable.
+
+\item
+TRANSCENTE: factor indicating the transportation center number. Takes values 1-6.
+
+\item
+SURFTYPE: Factor indicating surface type of the road. Grouped into two levels, asphalt (60,65,69,92) and concrete (70,74,76,77,79) as directed by DOT expertise. Numbers in () are from DOT Base Record Road and Structure Data document.
+
+\item
+FEDFUNC: Factor indicating the federal functional classification of the road segment. Grouped into two levels, other principal arterial (3) and minor arterial/major collector (4,5) as directed by DOT expertise.
+
+\item
+URBAN: Factor indicating whether road segment is in urban area or not.
+
+\item
+SYSCODE: Factor that indicates the state assigned system for the road segment. Takes two levels, US Route or Iowa Route.
+
+\end{itemize}
+
+\section{Model Estimation}
+To estimate regression, variance, and random effect parameters of the models, we use MCMC to get draws from the posterior distributions. We used the program \texttt{Stan} in \texttt{R} via the package \texttt{rstan}. For each model, we ran 4 chains of length 10,000 with the first 5,000 used as burn-in. We ran the sampler in parallel so all 4 chains for a given model would sample at the same time. Running this on the hpc-class server took approximately 24 hours for each model. We checked trace plots and Gelman-Rubin diagnostics to assess convergence. 
+
+\section{Results}
+
+\subsection{Model for All Crashes}
+
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+  \hline
+ & Estimate & Posterior SD & 2.5q & 97.5q \\ 
+  \hline
+(Intercept) & -0.650 & 0.096 & -0.836 & -0.462 \\ 
+  TRANSCENTE2 & -0.294 & 0.060 & -0.412 & -0.179 \\ 
+  TRANSCENTE3 & -0.153 & 0.057 & -0.264 & -0.039 \\ 
+  TRANSCENTE4 & -0.196 & 0.058 & -0.310 & -0.083 \\ 
+  TRANSCENTE5 & 0.023 & 0.058 & -0.090 & 0.134 \\ 
+  TRANSCENTE6 & 0.059 & 0.062 & -0.063 & 0.179 \\ 
+  lVOLUME & -0.317 & 0.016 & -0.348 & -0.287 \\ 
+  FEDFUNC2 & -0.496 & 0.046 & -0.588 & -0.407 \\ 
+  SYSCODE3 & -0.275 & 0.047 & -0.368 & -0.182 \\ 
+  URBAN & 0.228 & 0.088 & 0.054 & 0.400 \\ 
+  SURFTYPE2 & -0.077 & 0.027 & -0.131 & -0.024 \\ 
+  sigmav & 0.885 & 0.040 & 0.807 & 0.963 \\ 
+   \hline
+\end{tabular}
+\caption{Regression and variance parameter summaries for All Crashes Model} 
+\label{allcrash}
+\end{table}
+
+
+
+\subsection{Model for Fatal and Major Injuries}
+
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+  \hline
+ & Estimate & Posterior SD & 2.5q & 97.5q \\ 
+  \hline
+(Intercept) & -0.929 & 0.095 & -1.115 & -0.740 \\ 
+  TRANSCENTE2 & -0.301 & 0.059 & -0.417 & -0.188 \\ 
+  TRANSCENTE3 & -0.189 & 0.057 & -0.301 & -0.078 \\ 
+  TRANSCENTE4 & -0.239 & 0.058 & -0.353 & -0.126 \\ 
+  TRANSCENTE5 & 0.008 & 0.057 & -0.105 & 0.120 \\ 
+  TRANSCENTE6 & 0.021 & 0.063 & -0.101 & 0.146 \\ 
+  lVOLUME & -0.340 & 0.016 & -0.372 & -0.308 \\ 
+  SURFTYPE2 & -0.091 & 0.027 & -0.144 & -0.038 \\ 
+  sigmav & 0.939 & 0.038 & 0.868 & 1.016 \\ 
+   \hline
+\end{tabular}
+\caption{Regression and variance parameter summaries for Fatal/Major injury Crashes Model} 
+\label{fatmajcrash}
+\end{table}
+
+
+\subsection{Model for Minor Injuries}
+
+
+
+\subsection{Model for Property Damage Only}
+
+
+
 
 \end{document}

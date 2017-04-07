@@ -22,7 +22,7 @@ d$SURFTYPE2 <- replace(d$SURFTYPE2 , d$SURFTYPE%in%c(60,65,69,92) , 1 )
 d$SURFTYPE2 <- replace(d$SURFTYPE2 , d$SURFTYPE%in%c(70,74,76,77,79) , 2 )
 
 X <- as.data.frame(model.matrix(
-  ~ TRANSCENTE+lVOLUME+FEDFUNC+SYSCODE+URBAN+
+  ~ TRANSCENTE+lVOLUME+FEDFUNC2+SYSCODE+URBAN+
     SURFTYPE2, data=d))
 
 
