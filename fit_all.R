@@ -45,7 +45,9 @@ dataList = list(
   Nseg=length(unique(d$TASLINKID)),
   j = neighbors$j, k=neighbors$k,
   w=neighbors$w,
-  scolw = neighbors$scolw#,
+  scolw = neighbors$scolw,
+  mub=rep(0,ncol(X)),
+  Vb=diag(ncol(X))*1000#,
   #omub=neighbors$omub,nomub=neighbors$nomub,
   #lomub=length(neighbors$omub),lnomub=length(neighbors$nomub)
 )

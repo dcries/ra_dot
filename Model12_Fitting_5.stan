@@ -5,6 +5,8 @@ int<lower=0> Nseg;   // Number of sections characterized by TASLINKID
 int<lower=0> ljno0;
 int<lower=0> lj0;
 int<lower=0> lu;   // ### Number of sections that has neighbors
+vector[K] mub;
+matrix[K,K] Vb;
 //int<lower=0> lnomub ; 
 //int<lower=0> lomub ; 
 matrix[N,K] X; // predictor matrix
@@ -59,12 +61,8 @@ transformed parameters {
   
   XB <- X*Beta;
   
-  for(i in 1:lj0){
-   lambda[j0[i]] <- exp(XB[j0[i]] + v[j[j0[i]]] + log_l[j0[i]]) ; 
-  }
-   
-  for(i in 1:ljno0){
-    lambda[jno0[i]] <-  exp(XB[jno0[i]] + v[j[jno0[i]]]+ + log_l[jno0[i]]); //+ u[ k[i] ]);
+  for(i in 1:N){
+    lambda[i] <- exp(XB[i]+v[j[i]]+log_l[i]);
   }
  
  
@@ -80,7 +78,7 @@ transformed parameters {
 }
 
 model {
-  Beta ~ normal(0,.1);
+  Beta ~ multi_normal(mub,Vb);
   tau2v ~ gamma(0.5, 0.05);
   //tau2u ~ gamma(0.5, 0.05);
   

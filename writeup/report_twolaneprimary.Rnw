@@ -157,10 +157,10 @@ Notes on the fitted model:
 
 \begin{enumerate}
 \item
-TRANSCENTE: total crash rates appear to be lower in zones 2,3,4 while they are higher in zones 5 and 6. 
+TRANSCENTE: total crash rates appear to be lower in districts 2,3,4 while they are higher in districts 5 and 6 as compared to district 1. 
 
 \item
-lVOLUME: Volume is negatively associated with number of crashes. For everything else fixed, an increase in VOLUME by 2.72, we'd expect a decrease in number of crashes by a factor of 0.72.
+lVOLUME: Volume is negatively associated with number of crashes. For everything else fixed, an increase in log(VOLUME) by 1, we'd expect a decrease in number of crashes by a factor of 0.72.
 
 \item
 FEDFUNC: The estimate of -0.496 for FEDFUNC2 means those roads classified as minor arterial or major collector (4,5) have an expected number of crashes 60\% of other principal arterial roads, all else equal. 
@@ -210,7 +210,7 @@ Notes on the fitted model:
 TRANSCENTE: Fatal/major injury crash rates appear to be lower in zones 2,3,4 while they are higher in zones 5 and 6. 
 
 \item
-lVOLUME: Volume is negatively associated with number of crashes. For everything else fixed, an increase in VOLUME by 2.72, we'd expect a decrease in number of crashes by a factor of 0.71.
+lVOLUME: Volume is negatively associated with number of crashes. For everything else fixed, an increase in log(VOLUME) by 1, we'd expect a decrease in number of crashes by a factor of 0.71.
 
 \item
 SURFTYPE2: The estimate of -0.091 for SURFTYPE2 means concrete roads have an expected number of crashes 91\% of asphalt roads, all else equal.
@@ -254,7 +254,7 @@ Notes on the fitted model:
 TRANSCENTE: total crash rates for minor injuries appear to be lower in zones 2,3,4 while they are higher in zones 5 and 6. 
 
 \item
-lVOLUME: Volume is negatively associated with number of crashes. For everything else fixed, an increase in VOLUME by 2.72, we'd expect a decrease in number of crashes by a factor of 0.91.
+lVOLUME: Volume is negatively associated with number of crashes. For everything else fixed, an increase in log(VOLUME) by 1, we'd expect a decrease in number of crashes by a factor of 0.91.
 
 \item
 FEDFUNC: The estimate of -0.615 for FEDFUNC2 means those roads classified as minor arterial or major collector (4,5) have an expected number of crashes 54\% of other principal arterial roads, all else equal. 
@@ -307,7 +307,7 @@ Notes on the fitted model:
 TRANSCENTE: total crash rates for PDO appear to be lower in zones 2,3,4 while they are higher in zones 5 and 6. 
 
 \item
-lVOLUME: Volume is negatively associated with number of crashes. For everything else fixed, an increase in VOLUME by 2.72, we'd expect a decrease in number of crashes by a factor of 0.73.
+lVOLUME: Volume is negatively associated with number of crashes. For everything else fixed, an increase in log(VOLUME) by 1, we'd expect a decrease in number of crashes by a factor of 0.73.
 
 \item
 FEDFUNC: The estimate of -0.498 for FEDFUNC2 means those roads classified as minor arterial or major collector (4,5) have an expected number of crashes 61\% of other principal arterial roads, all else equal. 
