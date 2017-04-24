@@ -16,7 +16,7 @@
 \maketitle
 
 \begin{abstract}
-We explore the frequency and severity of crashes on two-lane primary roads in Iowa using a Bayesian generalized linear mixed effects model. We include models for all crashes, crashes resulting in fatalities and major injuries, crashes resulting in minor injuries, and crashed resulting in property damage only. Variables to be included in the models were chosen by a combination of Iowa Department of Transportation (DOT) employee expertise and the use of the spike and slab prior for variable selection in the \texttt{R} package \texttt{spikeSlabGAM}. Volume, transit center, and surface type were important for describing number of crashes for all models and federal function classification, urban area, and US or state road classification were important for all but the Fatal/Major model. Repeated measures random effects were included to induce correlation among years for given road segments. We used \texttt{Stan} to draw samples from the posterior distributions. We wrote software in \texttt{R} to perform model fitting as well as compute Safety Performance Functions (SPFs).
+We explore the frequency and severity of crashes on two-lane primary roads in Iowa using a Bayesian generalized linear mixed effects model. We include models for all crashes, crashes resulting in fatalities and major injuries, crashes resulting in minor injuries, and crashed resulting in property damage only. Variables to be included in the models were chosen by a combination of Iowa Department of Transportation (DOT) employee expertise and the use of the spike and slab prior for variable selection in the \texttt{R} package \texttt{spikeSlabGAM}. Volume, district, and surface type were important for describing number of crashes for all models and federal function classification, urban area, and US or state road classification were important for all but the Fatal/Major model. Repeated measures random effects were included to induce correlation among years for given road segments. We used \texttt{Stan} to draw samples from the posterior distributions. We wrote software in \texttt{R} to perform model fitting as well as compute Safety Performance Functions (SPFs).
 
 \end{abstract}
 
@@ -24,7 +24,7 @@ We explore the frequency and severity of crashes on two-lane primary roads in Io
 
 \section{Introduction and Data Description}
 
-In this report we present a model as well as results to produce Safety Performance Functions (SPF) for two lane primary roads in Iowa. The model we develop and estimate uses data from 2005-2014. We have information on over 140 road characteristics such as speed limit, median width, volume and access control (to name a few) for each road segment. We also have the total number of crashes, number of fatal crashes, number of crashes resulting in major injuries and minor injuries, and number of crashes resulting in only property damage. Because fatal crashes are relatively uncommon, we will combine fatal and major crashes into one category. There are 94,370 observations at 10,055 unique road segments. 
+In this report we present a model as well as results to produce Safety Performance Functions (SPF) for two lane primary roads in Iowa. The model we develop and estimate uses data from 2005-2014. We have information on over 140 road characteristics such as speed limit, surface type, volume and access control (to name a few) for each road segment. We also have the total number of crashes, number of fatal crashes, number of crashes resulting in major injuries and minor injuries, and number of crashes resulting in only property damage. Because fatal crashes are relatively uncommon, we will combine fatal and major crashes into one category. There are 94,370 observations at 10,055 unique road segments. 
 
 
 \section{Model Specification}
@@ -68,7 +68,7 @@ The term $\lambda_{ij}t_i$ is then the \emph{expected number of crashes per mile
 \subsection{Spike and Slab Prior}
 There are over 140 road characteristics available, but we do not want to include all in the model in order to avoid overfitting. With the expertise of the Iowa Department of Transportation employees, the number of possible explanatory variables is narrowed down to about 40. However, many of these variables are factors that have many levels. We would like to narrow the possible variables down more so the models have a handful of interpretable variables. In addition, we don't want the factors that are included to have a large number of levels that could lead to overfitting and at the same time provide no real interpretation to the problem.
 
-To select the possible explanatory variables to include in the model, we take a Bayesian approach by using spike and slab priors. We used the R package \texttt{spikeSlabGAM} to implement the variable selection. This package allows for variable selection in the generalized linear model case. It also can check for not only linear associations, but also higher order associations, interactions, as well as a general spline smoother. The article in the Journal of Statistical Software on this package is very helpful. The spike and slab prior the authors of the \texttt{spikeSlabGAM} package in R is given by:
+To select the possible explanatory variables to include in the model, we take a Bayesian approach by using spike and slab priors. We used the R package \texttt{spikeSlabGAM} to implement the variable selection. This package allows for variable selection in the generalized linear model case. It also can check for not only linear associations, but also higher order associations, interactions, as well as a general spline smoother. The article in the Journal of Statistical Software on this package is very helpful. The spike and slab prior that the authors of the \texttt{spikeSlabGAM} package in R developed is given by:
 
 \begin{align*}
 \beta|\gamma,\tau^2 &\sim N(0,v^2), \text{ where } v^2=\tau^2\gamma, \\
@@ -104,7 +104,7 @@ In this section we describe the variables that are present in the models as expl
 VOLUME: describes usage of segment. We use log(VOLUME) as an explanatory variable.
 
 \item
-TRANSCENTE: factor indicating the transportation center number. Takes values 1-6.
+TRANSCENTE: factor indicating the district number. Takes values 1-6.
 
 \item
 SURFTYPE: Factor indicating surface type of the road. Grouped into two levels, asphalt (60,65,69,92) and concrete (70,74,76,77,79) as directed by DOT expertise. Numbers in () are from DOT Base Record Road and Structure Data document.
@@ -160,19 +160,19 @@ Notes on the fitted model:
 TRANSCENTE: total crash rates appear to be lower in districts 2,3,4 while they are higher in districts 5 and 6 as compared to district 1. 
 
 \item
-lVOLUME: Volume is negatively associated with number of crashes. For everything else fixed, an increase in log(VOLUME) by 1, we'd expect a decrease in number of crashes by a factor of 0.72.
+lVOLUME: Volume is negatively associated with number of crashes. For everything else fixed, an increase in log(VOLUME) by 1, we'd expect a decrease in number of crashes by a factor of $e^{-0.317}=$0.72.
 
 \item
-FEDFUNC: The estimate of -0.496 for FEDFUNC2 means those roads classified as minor arterial or major collector (4,5) have an expected number of crashes 60\% of other principal arterial roads, all else equal. 
+FEDFUNC: The estimate of -0.496 for FEDFUNC2 means those roads classified as minor arterial or major collector (4,5) have an expected number of crashes $e^{-0.496}=$60\% of other principal arterial roads, all else equal. 
 
 \item
-SYSCODE3: The estimate of -0.275 for SYSCODE3 means Iowa Routes have an expected number of crashes 76\% of US Routes, all else equal.
+SYSCODE3: The estimate of -0.275 for SYSCODE3 means Iowa Routes have an expected number of crashes $e^{-0.275}=$76\% of US Routes, all else equal.
 
 \item
-URBAN: The estimate of 0.228 for URBAN means routes in designated urban areas have an expected number of crashes 125\% of roads in rural areas, all else equal.
+URBAN: The estimate of 0.228 for URBAN means routes in designated urban areas have an expected number of crashes $e^{0.228}=$125\% of roads in rural areas, all else equal.
 
 \item
-SURFTYPE2: The estimate of -0.077 for SURFTYPE2 means concrete roads have an expected number of crashes 92\% of asphalt roads, all else equal.
+SURFTYPE2: The estimate of -0.077 for SURFTYPE2 means concrete roads have an expected number of crashes $e^{-0.077}=$92\% of asphalt roads, all else equal.
 
 \end{enumerate}
 
@@ -210,10 +210,10 @@ Notes on the fitted model:
 TRANSCENTE: Fatal/major injury crash rates appear to be lower in zones 2,3,4 while they are higher in zones 5 and 6. 
 
 \item
-lVOLUME: Volume is negatively associated with number of crashes. For everything else fixed, an increase in log(VOLUME) by 1, we'd expect a decrease in number of crashes by a factor of 0.71.
+lVOLUME: Volume is negatively associated with number of crashes. For everything else fixed, an increase in log(VOLUME) by 1, we'd expect a decrease in number of crashes by a factor of $e^{-0.340}=$0.71.
 
 \item
-SURFTYPE2: The estimate of -0.091 for SURFTYPE2 means concrete roads have an expected number of crashes 91\% of asphalt roads, all else equal.
+SURFTYPE2: The estimate of -0.091 for SURFTYPE2 means concrete roads have an expected number of crashes $e^{-0.091}=$91\% of asphalt roads, all else equal.
 
 \end{enumerate}
 
@@ -254,19 +254,19 @@ Notes on the fitted model:
 TRANSCENTE: total crash rates for minor injuries appear to be lower in zones 2,3,4 while they are higher in zones 5 and 6. 
 
 \item
-lVOLUME: Volume is negatively associated with number of crashes. For everything else fixed, an increase in log(VOLUME) by 1, we'd expect a decrease in number of crashes by a factor of 0.91.
+lVOLUME: Volume is negatively associated with number of crashes. For everything else fixed, an increase in log(VOLUME) by 1, we'd expect a decrease in number of crashes by a factor of $e^{-0.093}=$0.91.
 
 \item
-FEDFUNC: The estimate of -0.615 for FEDFUNC2 means those roads classified as minor arterial or major collector (4,5) have an expected number of crashes 54\% of other principal arterial roads, all else equal. 
+FEDFUNC: The estimate of -0.615 for FEDFUNC2 means those roads classified as minor arterial or major collector (4,5) have an expected number of crashes $e^{-0.615}=$54\% of other principal arterial roads, all else equal. 
 
 \item
-SYSCODE3: The estimate of -0.119 for SYSCODE3 means Iowa Routes have an expected number of crashes 89\% of US Routes, all else equal.
+SYSCODE3: The estimate of -0.119 for SYSCODE3 means Iowa Routes have an expected number of crashes $e^{-0.119}=$89\% of US Routes, all else equal.
 
 \item
-URBAN: The estimate of 0.184 for URBAN means routes in designated urban areas have an expected number of crashes 120\% of roads in rural areas, all else equal.
+URBAN: The estimate of 0.184 for URBAN means routes in designated urban areas have an expected number of crashes $e^{0.184}=$120\% of roads in rural areas, all else equal.
 
 \item
-SURFTYPE2: The estimate of -0.064 for SURFTYPE2 means concrete roads have an expected number of crashes 94\% of asphalt roads, all else equal.
+SURFTYPE2: The estimate of -0.064 for SURFTYPE2 means concrete roads have an expected number of crashes $e^{-0.064}=$94\% of asphalt roads, all else equal.
 
 \end{enumerate}
 
@@ -307,19 +307,19 @@ Notes on the fitted model:
 TRANSCENTE: total crash rates for PDO appear to be lower in zones 2,3,4 while they are higher in zones 5 and 6. 
 
 \item
-lVOLUME: Volume is negatively associated with number of crashes. For everything else fixed, an increase in log(VOLUME) by 1, we'd expect a decrease in number of crashes by a factor of 0.73.
+lVOLUME: Volume is negatively associated with number of crashes. For everything else fixed, an increase in log(VOLUME) by 1, we'd expect a decrease in number of crashes by a factor of $e^{-0.318}=$0.73.
 
 \item
-FEDFUNC: The estimate of -0.498 for FEDFUNC2 means those roads classified as minor arterial or major collector (4,5) have an expected number of crashes 61\% of other principal arterial roads, all else equal. 
+FEDFUNC: The estimate of -0.498 for FEDFUNC2 means those roads classified as minor arterial or major collector (4,5) have an expected number of crashes $e^{-0.498}=$61\% of other principal arterial roads, all else equal. 
 
 \item
-SYSCODE3: The estimate of -0.274 for SYSCODE3 means Iowa Routes have an expected number of crashes 89\% of US Routes, all else equal.
+SYSCODE3: The estimate of -0.274 for SYSCODE3 means Iowa Routes have an expected number of crashes $e^{-0.274}=$89\% of US Routes, all else equal.
 
 \item
-URBAN: The estimate of 0.228 for URBAN means routes in designated urban areas have an expected number of crashes 120\% of roads in rural areas, all else equal.
+URBAN: The estimate of 0.228 for URBAN means routes in designated urban areas have an expected number of crashes $e^{0.228}=$120\% of roads in rural areas, all else equal.
 
 \item
-SURFTYPE2: The estimate of -0.077 for SURFTYPE2 means concrete roads have an expected number of crashes 94\% of asphalt roads, all else equal.
+SURFTYPE2: The estimate of -0.077 for SURFTYPE2 means concrete roads have an expected number of crashes $e^{-0.077}=$94\% of asphalt roads, all else equal.
 
 \end{enumerate}
 

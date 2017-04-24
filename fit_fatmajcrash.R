@@ -4,7 +4,7 @@ library(rstan)
 
 setwd("C:\\Users\\dcries\\github\\ra_dot")
 setwd("/home/danny/Documents/github/ra_dot/")
-load("neighbors.RData")
+load("neighbors_reduced.RData")
 load("neighbors_subset.RData")
 
 d <- read.csv('data/completedata_nona.csv')
@@ -71,6 +71,12 @@ options(mc.cores = parallel::detectCores())
 #unloadNamespace("RMark")
 #unloadNamespace("snowfall")
 #unloadNamespace("snow") 
+fit <- stan(file = 'Model12_Fitting_5.stan',
+            data = dataList,
+            #pars="Beta",
+            pars=c("Beta","sigmav"),
+            chains = 4, iter=1000)   ##Compiling the model
+
 
 fit <- stan(fit=fit,
             # pars="Beta",
