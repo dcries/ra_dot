@@ -31,7 +31,7 @@ d$SURFTYPE2 <- replace(d$SURFTYPE2 , d$SURFTYPE%in%c(70,74,76,77,79) , 2 )
 
 
 Xall <- as.data.frame(model.matrix(
-  ~ TRANSCENTE+lVOLUME+FEDFUNC2+SYSCODE+URBAN+
+  ~ TRANSCENTE+lVOLUME+FEDFUNC2+URBAN+
     SURFTYPE2, data=d))
 
 Xfatmaj <- as.data.frame(model.matrix(
@@ -39,11 +39,11 @@ Xfatmaj <- as.data.frame(model.matrix(
     SURFTYPE2, data=d))
 
 Xmin <- as.data.frame(model.matrix(
-  ~ TRANSCENTE+lVOLUME+FEDFUNC2+SYSCODE+URBAN+
+  ~ TRANSCENTE+lVOLUME+FEDFUNC2+URBAN+
     SURFTYPE2, data=d))
 
 Xpdo <- as.data.frame(model.matrix(
-  ~ TRANSCENTE+lVOLUME+FEDFUNC2+SYSCODE+URBAN+
+  ~ TRANSCENTE+lVOLUME+FEDFUNC2+URBAN+
     SURFTYPE2, data=d))
 
 

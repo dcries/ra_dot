@@ -139,7 +139,6 @@ TRANSCENTE & TRANSCENTE & TRANSCENTE & TRANSCENTE \\
 SURFTYPE & SURFTYPE & SURFTYPE & SURFTYPE \\
  & FEDFUNC & FEDFUNC & FEDFUNC \\
   & URBAN & URBAN & URBAN \\
-   & SYSCODE & SYSCODE & SYSCODE \\
   \hline
   \end{tabular}
 \caption{Variables included for each model.}
@@ -179,30 +178,28 @@ To estimate regression, variance, and random effect parameters of the models, we
 \subsection{Model for All Crashes}
 
 
-\begin{table}[h!]
+\begin{table}[ht]
 \centering
 \begin{tabular}{rrrrr}
   \hline
  & Estimate & Posterior SD & 2.5q & 97.5q \\ 
   \hline
-(Intercept) & -0.650 & 0.096 & -0.836 & -0.462 \\ 
-  TRANSCENTE2 & -0.294 & 0.060 & -0.412 & -0.179 \\ 
-  TRANSCENTE3 & -0.153 & 0.057 & -0.264 & -0.039 \\ 
-  TRANSCENTE4 & -0.196 & 0.058 & -0.310 & -0.083 \\ 
-  TRANSCENTE5 & 0.023 & 0.058 & -0.090 & 0.134 \\ 
-  TRANSCENTE6 & 0.059 & 0.062 & -0.063 & 0.179 \\ 
-  lVOLUME & -0.317 & 0.016 & -0.348 & -0.287 \\ 
-  FEDFUNC2 & -0.496 & 0.046 & -0.588 & -0.407 \\ 
-  SYSCODE3 & -0.275 & 0.047 & -0.368 & -0.182 \\ 
-  URBAN & 0.228 & 0.088 & 0.054 & 0.400 \\ 
-  SURFTYPE2 & -0.077 & 0.027 & -0.131 & -0.024 \\ 
-  sigmav & 0.885 & 0.040 & 0.807 & 0.963 \\ 
+(Intercept) & -8.694 & 0.392 & -9.467 & -7.925 \\ 
+  TRANSCENTE2 & -0.212 & 0.089 & -0.385 & -0.039 \\ 
+  TRANSCENTE3 & -0.025 & 0.085 & -0.190 & 0.142 \\ 
+  TRANSCENTE4 & -0.037 & 0.088 & -0.209 & 0.135 \\ 
+  TRANSCENTE5 & 0.163 & 0.085 & -0.004 & 0.327 \\ 
+  TRANSCENTE6 & 0.113 & 0.092 & -0.068 & 0.293 \\ 
+  lVOLUME & 0.760 & 0.051 & 0.659 & 0.861 \\ 
+  FEDFUNC2 & 0.043 & 0.057 & -0.068 & 0.154 \\ 
+  URBAN & 0.336 & 0.155 & 0.026 & 0.629 \\ 
+  SURFTYPE2 & -0.042 & 0.028 & -0.098 & 0.013 \\ 
+  sigmav & 0.780 & 0.043 & 0.696 & 0.864 \\ 
    \hline
 \end{tabular}
 \caption{Regression and variance parameter summaries for All Crashes Model} 
 \label{allcrash}
 \end{table}
-
 Notes on the fitted model:
 
 \begin{enumerate}
@@ -231,21 +228,21 @@ SURFTYPE2: The estimate of -0.077 for SURFTYPE2 means concrete roads have an exp
 \subsection{Model for Fatal and Major Injuries}
 
 
-\begin{table}[h!]
+\begin{table}[ht]
 \centering
 \begin{tabular}{rrrrr}
   \hline
  & Estimate & Posterior SD & 2.5q & 97.5q \\ 
   \hline
-(Intercept) & -0.929 & 0.095 & -1.115 & -0.740 \\ 
-  TRANSCENTE2 & -0.301 & 0.059 & -0.417 & -0.188 \\ 
-  TRANSCENTE3 & -0.189 & 0.057 & -0.301 & -0.078 \\ 
-  TRANSCENTE4 & -0.239 & 0.058 & -0.353 & -0.126 \\ 
-  TRANSCENTE5 & 0.008 & 0.057 & -0.105 & 0.120 \\ 
-  TRANSCENTE6 & 0.021 & 0.063 & -0.101 & 0.146 \\ 
-  lVOLUME & -0.340 & 0.016 & -0.372 & -0.308 \\ 
-  SURFTYPE2 & -0.091 & 0.027 & -0.144 & -0.038 \\ 
-  sigmav & 0.939 & 0.038 & 0.868 & 1.016 \\ 
+(Intercept) & -8.640 & 0.317 & -9.266 & -8.023 \\ 
+  TRANSCENTE2 & -0.224 & 0.089 & -0.399 & -0.050 \\ 
+  TRANSCENTE3 & -0.035 & 0.085 & -0.200 & 0.132 \\ 
+  TRANSCENTE4 & -0.044 & 0.088 & -0.218 & 0.126 \\ 
+  TRANSCENTE5 & 0.152 & 0.084 & -0.013 & 0.316 \\ 
+  TRANSCENTE6 & 0.113 & 0.092 & -0.070 & 0.291 \\ 
+  lVOLUME & 0.757 & 0.043 & 0.674 & 0.842 \\ 
+  SURFTYPE2 & -0.042 & 0.028 & -0.097 & 0.013 \\ 
+  sigmav & 0.783 & 0.043 & 0.694 & 0.864 \\ 
    \hline
 \end{tabular}
 \caption{Regression and variance parameter summaries for Fatal/Major injury Crashes Model} 
@@ -272,24 +269,23 @@ SURFTYPE2: The estimate of -0.091 for SURFTYPE2 means concrete roads have an exp
 \clearpage
 \subsection{Model for Minor Injuries}
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \begin{tabular}{rrrrr}
   \hline
  & Estimate & Posterior SD & 2.5q & 97.5q \\ 
   \hline
-(Intercept) & -0.412 & 0.096 & -0.599 & -0.221 \\ 
-  TRANSCENTE2 & -0.269 & 0.059 & -0.385 & -0.153 \\ 
-  TRANSCENTE3 & -0.121 & 0.057 & -0.233 & -0.009 \\ 
-  TRANSCENTE4 & -0.134 & 0.059 & -0.251 & -0.017 \\ 
-  TRANSCENTE5 & 0.032 & 0.057 & -0.083 & 0.143 \\ 
-  TRANSCENTE6 & 0.070 & 0.062 & -0.051 & 0.191 \\ 
-  lVOLUME & -0.093 & 0.019 & -0.130 & -0.055 \\ 
-  FEDFUNC2 & -0.615 & 0.036 & -0.687 & -0.545 \\ 
-  SYSCODE3 & -0.119 & 0.048 & -0.213 & -0.024 \\ 
-  URBAN & 0.184 & 0.088 & 0.008 & 0.357 \\ 
-  SURFTYPE2 & -0.064 & 0.027 & -0.116 & -0.011 \\ 
-  sigmav & 0.862 & 0.039 & 0.786 & 0.937 \\ 
+(Intercept) & -8.694 & 0.392 & -9.467 & -7.925 \\ 
+  TRANSCENTE2 & -0.212 & 0.089 & -0.385 & -0.039 \\ 
+  TRANSCENTE3 & -0.025 & 0.085 & -0.190 & 0.142 \\ 
+  TRANSCENTE4 & -0.037 & 0.088 & -0.209 & 0.135 \\ 
+  TRANSCENTE5 & 0.163 & 0.085 & -0.004 & 0.327 \\ 
+  TRANSCENTE6 & 0.113 & 0.092 & -0.068 & 0.293 \\ 
+  lVOLUME & 0.760 & 0.051 & 0.659 & 0.861 \\ 
+  FEDFUNC2 & 0.043 & 0.057 & -0.068 & 0.154 \\ 
+  URBAN & 0.336 & 0.155 & 0.026 & 0.629 \\ 
+  SURFTYPE2 & -0.042 & 0.028 & -0.098 & 0.013 \\ 
+  sigmav & 0.780 & 0.043 & 0.696 & 0.864 \\ 
    \hline
 \end{tabular}
 \caption{Regression and variance parameter summaries for Minimum injury Crashes Model} 
@@ -325,24 +321,23 @@ SURFTYPE2: The estimate of -0.064 for SURFTYPE2 means concrete roads have an exp
 \clearpage
 \subsection{Model for Property Damage Only}
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \begin{tabular}{rrrrr}
   \hline
  & Estimate & Posterior SD & 2.5q & 97.5q \\ 
   \hline
-(Intercept) & -0.651 & 0.095 & -0.838 & -0.465 \\ 
-  TRANSCENTE2 & -0.294 & 0.059 & -0.408 & -0.181 \\ 
-  TRANSCENTE3 & -0.153 & 0.057 & -0.264 & -0.042 \\ 
-  TRANSCENTE4 & -0.196 & 0.058 & -0.310 & -0.084 \\ 
-  TRANSCENTE5 & 0.023 & 0.057 & -0.089 & 0.133 \\ 
-  TRANSCENTE6 & 0.058 & 0.062 & -0.066 & 0.180 \\ 
-  lVOLUME & -0.318 & 0.016 & -0.348 & -0.287 \\ 
-  FEDFUNC2 & -0.498 & 0.046 & -0.588 & -0.407 \\ 
-  SYSCODE3 & -0.274 & 0.047 & -0.366 & -0.181 \\ 
-  URBAN & 0.228 & 0.089 & 0.052 & 0.402 \\ 
-  SURFTYPE2 & -0.077 & 0.027 & -0.130 & -0.025 \\ 
-  sigmav & 0.887 & 0.039 & 0.812 & 0.966 \\ 
+(Intercept) & -8.694 & 0.392 & -9.467 & -7.925 \\ 
+  TRANSCENTE2 & -0.212 & 0.089 & -0.385 & -0.039 \\ 
+  TRANSCENTE3 & -0.025 & 0.085 & -0.190 & 0.142 \\ 
+  TRANSCENTE4 & -0.037 & 0.088 & -0.209 & 0.135 \\ 
+  TRANSCENTE5 & 0.163 & 0.085 & -0.004 & 0.327 \\ 
+  TRANSCENTE6 & 0.113 & 0.092 & -0.068 & 0.293 \\ 
+  lVOLUME & 0.760 & 0.051 & 0.659 & 0.861 \\ 
+  FEDFUNC2 & 0.043 & 0.057 & -0.068 & 0.154 \\ 
+  URBAN & 0.336 & 0.155 & 0.026 & 0.629 \\ 
+  SURFTYPE2 & -0.042 & 0.028 & -0.098 & 0.013 \\ 
+  sigmav & 0.780 & 0.043 & 0.696 & 0.864 \\ 
    \hline
 \end{tabular}
 \caption{Regression and variance parameter summaries for PDO Crashes Model} 

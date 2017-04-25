@@ -28,7 +28,7 @@ X <- as.data.frame(model.matrix(
 
 
 dataList = list(
-  Y = d$FATMAJCRASHES,
+  Y = d$PDOCRASH,
   N = length(d$FATMAJCRASHES),
   ljno0=neighbors$ljno0,
   lj0=neighbors$lj0 , 
