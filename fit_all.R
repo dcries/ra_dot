@@ -23,11 +23,22 @@ d$SURFTYPE2 <- 0
 d$SURFTYPE2 <- replace(d$SURFTYPE2 , d$SURFTYPE%in%c(60,65,69,92) , 1 )
 d$SURFTYPE2 <- replace(d$SURFTYPE2 , d$SURFTYPE%in%c(70,74,76,77,79) , 2 )
 
-
+#some speed limits >55
+d$LIMITMPH2 <- as.factor(d$LIMITMPH)
+#lots of 0s for PSI rating
+d$RUMBLEL <- d$RUMBLEL - 1
+d$RUMBLER <- d$RUMBLER - 1
+#SHDTIEDR and L have 3 values, should just be yes/no
+d$SHDTYPEL2 <- as.factor(d$SHDTYPEL)
+d$SHDTYPER2 <- as.factor(d$SHDTYPER)
+d$EntTypeA <- as.factor(d$EntTypeA)
+d$EntTypeB <- as.factor(d$EntTypeB)
+d$EntTypeC <- as.factor(d$EntTypeC)
 
 X <- as.data.frame(model.matrix(
   ~ TRANSCENTE+lVOLUME+FEDFUNC2+URBAN+
-    SURFTYPE2+lVOLUME*FEDFUNC2, data=d))
+    SURFTYPE2+IRI+RUMBLEL+RUMBLER+SURFWIDTH+SHDTYPEL2+SHDTYPER2+SHDWIDTHL+SHDWIDTHR+EntTypeA+EntTypeB+EntTypeC, data=d))
+
 
 
 

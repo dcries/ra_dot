@@ -1,5 +1,6 @@
 library(foreign)
   library(dplyr)
+library(reshape)
 
 setwd("C:\\Users\\dcries\\github\\ra_dot\\data")
 d <- read.csv('completedata_nona.csv')
@@ -18,3 +19,9 @@ d3$EntTypeC[is.na(d3$EntTypeC)] <- 0
 d <- d3
 
 write.csv(d,'completedata_nona.csv',row.names=FALSE)
+
+
+ms <- melt(safety[,-1],id.vars=c("TASLINKID"))
+cs <- cast(ms,TASLINKID+variable~value)
+
+d2 <- left_join(d,cs)

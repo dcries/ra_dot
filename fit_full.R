@@ -26,7 +26,10 @@ d$RUMBLER <- d$RUMBLER - 1
 #SHDTIEDR and L have 3 values, should just be yes/no
 d$SHDTYPEL2 <- as.factor(d$SHDTYPEL)
 d$SHDTYPER2 <- as.factor(d$SHDTYPER)
+d$EntTypeA <- as.factor(d$EntTypeA)
+d$EntTypeB <- as.factor(d$EntTypeB)
+d$EntTypeC <- as.factor(d$EntTypeC)
 
 X <- as.data.frame(model.matrix(
   ~ TRANSCENTE+lVOLUME+FEDFUNC2+URBAN+
-    SURFTYPE2+IRI+RUMBLEL+RUMBLER+SURFWIDTH+SHDTYPEL2+SHDTYPER2+SHDWIDTHL+SHDWIDTHR, data=d))
+    SURFTYPE2+IRI+RUMBLEL+RUMBLER+SURFWIDTH+SHDTYPEL2+SHDTYPER2+SHDWIDTHL+SHDWIDTHR+EntTypeA+EntTypeB+EntTypeC, data=d))
