@@ -1,0 +1,98 @@
+\documentclass[a4paper]{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+
+% \title{Bayesian Model for Vehicle Crashes on Two-Lane Primary Roads in Iowa}
+% 
+% \author{Daniel Ries \\ Michael D. Pawlovich \\ Alicia Carriquiry \\ Zachary Hans}
+% 
+% \date{\today}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+
+
+\section{Examples}
+\subsection{Low Crash}
+
+
+  
+Suppose a one mile asphalt principal arterial road in a rural area of district 1 that has a volume of 403 was built and we are interest in the expected number of crashes.
+
+\begin{align*}
+\lambda_{new} &= e^{x_{new}'\beta} = exp((1,0,0,0,0,0,log(403),0,0,0) \begin{bmatrix} -7.302\\-.118\\-.058\\-.054\\.209\\.26\\.971\\.066\\.443\\-.005 \end{bmatrix}) \\
+            &= 0.22855
+\end{align*}
+
+That means we expect 0.22855 crashes (per mile) on this segment in a year. A 95\% credible interval for the expected number of crashes is (0.2088,0.2497).
+
+
+\subsection{High Crash}
+
+
+Suppose a one mile asphalt collector road in an urban area of district 6 that has a volume of 7000 was built and we are interest in the expected number of crashes.
+
+\begin{align*}
+\lambda_{new} &= e^{x_{new}'\beta} = exp((1,0,0,0,0,1,log(7000),0,1,0) \begin{bmatrix} -7.302\\-.118\\-.058\\-.054\\.209\\.26\\.971\\.066\\.443\\-.005 \end{bmatrix}) \\
+            &= 7.3791
+\end{align*}
+
+That means we expect 7.3791 crashes (per mile) on this segment in a year. A 95\% credible interval for the expected number of crashes is (6.4954,8.381).
+
+% 
+\end{document}

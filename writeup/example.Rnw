@@ -1,0 +1,59 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+
+% \title{Bayesian Model for Vehicle Crashes on Two-Lane Primary Roads in Iowa}
+% 
+% \author{Daniel Ries \\ Michael D. Pawlovich \\ Alicia Carriquiry \\ Zachary Hans}
+% 
+% \date{\today}
+
+\begin{document}
+
+<<setup,echo=FALSE,eval=TRUE>>=
+setwd("C:\\Users\\dcries\\github\\ra_dot\\data")
+example <- read.csv('example.csv')
+load("\\\\my.files.iastate.edu\\Users\\dcries\\Desktop\\RA_DOT\\workspace\\fit_all.RData")
+fit <- as.matrix(fit)
+fit <- fit[,1:10]
+@
+
+
+\section{Examples}
+\subsection{Low Crash}
+<<ci1,echo=FALSE,cache=TRUE,eval=TRUE>>=
+ci <- round(exp(quantile(fit%*%c(1,0,0,0,0,0,log(403),0,0,0),probs=c(0.025,0.975))),4)
+@
+
+  
+Suppose a one mile asphalt principal arterial road in a rural area of district 1 that has a volume of 403 was built and we are interest in the expected number of crashes.
+
+\begin{align*}
+\lambda_{new} &= e^{x_{new}'\beta} = exp((1,0,0,0,0,0,log(403),0,0,0) \begin{bmatrix} -7.302\\-.118\\-.058\\-.054\\.209\\.26\\.971\\.066\\.443\\-.005 \end{bmatrix}) \\
+            &= 0.22855
+\end{align*}
+
+That means we expect 0.22855 crashes (per mile) on this segment in a year. A 95\% credible interval for the expected number of crashes is (\Sexpr{ci[1]},\Sexpr{ci[2]}).
+
+
+\subsection{High Crash}
+<<ci2,echo=FALSE,cache=TRUE,eval=TRUE>>=
+ci2 <- round(exp(quantile(fit%*%c(1,0,0,0,0,1,log(7000),0,1,0),probs=c(0.025,0.975))),4)
+est <- round(exp(colMeans(fit)%*%c(1,0,0,0,0,1,log(7000),0,1,0)),4)
+@
+
+Suppose a one mile asphalt collector road in an urban area of district 6 that has a volume of 7000 was built and we are interest in the expected number of crashes.
+
+\begin{align*}
+\lambda_{new} &= e^{x_{new}'\beta} = exp((1,0,0,0,0,1,log(7000),0,1,0) \begin{bmatrix} -7.302\\-.118\\-.058\\-.054\\.209\\.26\\.971\\.066\\.443\\-.005 \end{bmatrix}) \\
+            &= \Sexpr{est}
+\end{align*}
+
+That means we expect \Sexpr{est} crashes (per mile) on this segment in a year. A 95\% credible interval for the expected number of crashes is (\Sexpr{ci2[1]},\Sexpr{ci2[2]}).
+
+% 
+\end{document}
