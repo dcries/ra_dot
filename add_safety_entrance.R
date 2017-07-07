@@ -25,3 +25,10 @@ ms <- melt(safety[,-1],id.vars=c("TASLINKID"))
 cs <- cast(ms,TASLINKID+variable~value)
 
 d2 <- left_join(d,cs)
+
+hazard <- read.dbf("\\\\my.files.iastate.edu\\Users\\dcries\\Desktop\\RA_DOT\\Roadside_Hazard_Rating_ruralprimarytwolane_20170705.dbf")
+
+d2 <- left_join(d,hazard[,c("TASLINKID","AVGRating")])
+d3 <- d2[!duplicated(d2),]
+write.csv(d3,'completedata_nona.csv',row.names=FALSE)
+

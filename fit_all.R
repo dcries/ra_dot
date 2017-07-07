@@ -38,7 +38,7 @@ d$EntTypeC <- as.numeric(d$EntTypeC)
 X <- as.data.frame(model.matrix(
   ~ TRANSCENTE+lVOLUME+FEDFUNC2+URBAN+
     SURFTYPE2+IRI+as.factor(RUMBLEL)+as.factor(RUMBLER)+SURFWIDTH+SHDTYPEL2+SHDTYPER2+SHDWIDTHL+SHDWIDTHR+
-    EntTypeA+EntTypeB+EntTypeC, data=d))
+    EntTypeA+EntTypeB+EntTypeC+AVGRating, data=d))
 
 
 
