@@ -74,7 +74,7 @@ fit <- stan(file = '/home/dcries/ra_dot/Model12_Fitting_5.stan',
             data = dataList,
             #pars="Beta",
             pars=c("Beta","sigmav"),
-            chains = 4, iter=10000,thin=5)   ##Compiling the model
+            chains = 4, iter=5000,thin=2)   ##Compiling the model
 
 save(fit,file="fit_all.RData")
 #----------------------------------------#
